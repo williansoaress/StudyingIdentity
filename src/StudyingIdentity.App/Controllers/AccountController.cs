@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudyingIdentity.App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,13 @@ namespace StudyingIdentity.App.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Register()
+        {
+            RegisterViewModel registerViewModel = new RegisterViewModel();
+            return View(registerViewModel);
+        }
+
     }
 }
