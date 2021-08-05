@@ -48,6 +48,13 @@ namespace StudyingIdentity.App.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> LogOff(RegisterViewModel model)
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
