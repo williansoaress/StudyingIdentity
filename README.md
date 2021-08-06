@@ -2,6 +2,8 @@
 
 Technologies used
 
+Dot Net Core 3.1
+
 Microsoft.AspNetCore.Identity.EntityFrameworkCore
 
 Microsoft.EntityFrameworkCore.SqlServer
