@@ -23,16 +23,20 @@ namespace StudyingIdentity.App.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public IActionResult Register(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             RegisterViewModel registerViewModel = new RegisterViewModel();
             return View(registerViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid) return View(model);
+
+            ViewData["ReturnUrl"] = returnUrl;
+            returnUrl = returnUrl ?? Url.Content("~/");
 
             var newUser = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
             var result = await _userManager.CreateAsync(newUser, model.Password);
@@ -40,7 +44,7 @@ namespace StudyingIdentity.App.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(newUser, isPersistent: false);
-                return RedirectToAction("Index", "Home");
+                return LocalRedirect(returnUrl);
             }
 
             AddErrors(result);
@@ -69,13 +73,13 @@ namespace StudyingIdentity.App.Controllers
             if (!ModelState.IsValid) return View(model);
 
             ViewData["ReturnUrl"] = returnUrl;
-
+            returnUrl = returnUrl ?? Url.Content("~/");
 
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
-                return Redirect(returnUrl);
+                return LocalRedirect(returnUrl);
             }
             else
             {
